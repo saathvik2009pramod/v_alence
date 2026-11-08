@@ -62,3 +62,11 @@ nav a[aria-current="page"] { color:#d5baf9; }
 h1 {font-weight:700; font-size:clamp(54px,6.7vw,104px); letter-spacing:-.065em;}
 .brand {font-weight:500;}
 @media(max-width:760px){h1{font-size:clamp(44px,11vw,82px)}}
+
+.curve-legend { color:#bfa4e6; }
+.legal-page {max-width:850px;padding:65px 0 90px;}
+.legal-page h1{font-size:clamp(38px,6vw,74px);line-height:1.1;letter-spacing:-.04em;}
+.legal-page h2{font-size:24px;letter-spacing:-.02em;line-height:1.3;margin-top:35px;}
+.legal-page p{max-width:75ch;}
+.legal-page a{color:#cbb0eb;text-decoration:underline;text-underline-offset:3px;}
+footer{flex-wrap:wrap;}footer nav{font-size:12px;gap:20px;}
