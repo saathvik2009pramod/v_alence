@@ -20,7 +20,7 @@ function drawCapabilityCurve() {
   context.scale(ratio,ratio);
   const x = value => 20 + (value - 0.75) / 0.45 * (width - 40);
   const y = value => height - 30 - value / 125000 * (height - 45);
-  context.font = '11px Neiko, Arial, sans-serif';
+  context.font = '11px "MADE Okine Sans", Arial, sans-serif';
   context.fillStyle = '#b3aabd';
   context.strokeStyle = '#39313f';
   context.beginPath();context.moveTo(20,y(0));context.lineTo(width-20,y(0));context.stroke();
@@ -107,3 +107,5 @@ document.querySelectorAll('.word-reveal').forEach(heading=>{
   });capObserver.observe(heading);
 });
 drawCapabilityCurve();updateSensitivity();
+
+document.fonts.ready.then(drawCapabilityCurve);

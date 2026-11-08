@@ -24,11 +24,12 @@
   .typing-complete .cursor::after { animation: none; }
 }
 
-/* A licensed Neiko webfont can replace the local source below. */
-@font-face { font-family: 'Neiko'; src: local('Neiko'), local('Neiko-Regular'); font-weight: 400; font-style: normal; font-display: swap; }
-body, button, select, input, small, .micro, .study-head, .timeline, .steps {
-  font-family: 'Neiko', Arial, sans-serif;
-}
+@font-face { font-family: "MADE Okine Sans"; src: url("fonts/OkineSans-Light.otf") format("opentype"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "MADE Okine Sans"; src: url("fonts/OkineSans-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "MADE Okine Sans"; src: url("fonts/OkineSans-Medium.otf") format("opentype"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "MADE Okine Sans"; src: url("fonts/OkineSans-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "MADE Okine Sans"; src: url("fonts/OkineSans-Black.otf") format("opentype"); font-weight: 900; font-style: normal; font-display: swap; }
+body, button, select, input, small, .micro, .study-head, .timeline, .steps { font-family: "MADE Okine Sans", Arial, sans-serif; }
 h1 em, h2 em { font-family: inherit; }
 .cap-intro { padding: 90px 0 65px; max-width: 1000px; }
 .cap-intro h1 { font-size: clamp(52px,7vw,100px); line-height: .98; }
@@ -57,3 +58,7 @@ h1 em, h2 em { font-family: inherit; }
 nav a[aria-current="page"] { color:#d5baf9; }
 @media(max-width:850px) { .cap-split {grid-template-columns:1fr;gap:25px} header {flex-wrap:wrap}nav{flex-wrap:wrap}.cap-intro{padding:50px 0}.cap-demo{padding:18px} }
 @media(prefers-reduced-motion:reduce) { .word-reveal span{opacity:1;transform:none;transition:none} }
+
+h1 {font-weight:700; font-size:clamp(54px,6.7vw,104px); letter-spacing:-.065em;}
+.brand {font-weight:500;}
+@media(max-width:760px){h1{font-size:clamp(44px,11vw,82px)}}

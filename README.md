@@ -18,4 +18,4 @@ All dependencies are local. Change the brand color in styles.css and logo.svg. T
 
 Overlay the files from Valence-Changed-Files.zip onto the existing site folder. Retain model.js and logo.svg from the previous download. Open capabilities.html for payout exploration, animated rule comparison, and probability sensitivity.
 
-Both pages prefer Neiko. The included @font-face uses locally installed Neiko / Neiko-Regular, with Arial as fallback. A licensed webfont was not supplied. To enable Neiko for every visitor, place your licensed WOFF2 file in the site folder and change the @font-face src in styles.css to its URL. The designer’s free release is personal-use only; see https://www.behance.net/gallery/218952455/Neiko-Typeface-%28Free-Font%29 . The fallback remains active on devices without the font.
+Both pages now embed MADE Okine Sans from the included fonts folder, including the Valence wordmark and canvas chart labels. Keep that folder beside index.html and capabilities.html. The original font license is included in fonts/LICENSE.txt. The supplied fonts are marked personal-use only; commercial use requires the appropriate license from MadeType.

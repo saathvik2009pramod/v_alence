@@ -23,7 +23,7 @@ function drawCurve() {
   const maxBonus = Math.max(1000, state.bonus * 1000 * 1.65);
   const x = attainment => 47 + (attainment - 0.75) / 0.45 * (width - 64);
   const y = value => height - 34 - value / maxBonus * (height - 64);
-  context.font = '11px Neiko, Arial, sans-serif';
+  context.font = '11px "MADE Okine Sans", Arial, sans-serif';
   context.fillStyle = '#a8a1b0';
   context.strokeStyle = '#37313d';
   for (let tick = 0; tick <= 3; tick++) {
@@ -169,4 +169,4 @@ function typeHeadline() {
   }
   setTimeout(revealCharacter, 350);
 }
-typeHeadline();
+document.fonts.ready.then(() => { drawCurve(); typeHeadline(); });
