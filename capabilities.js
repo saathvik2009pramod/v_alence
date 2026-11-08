@@ -1,14 +1,11 @@
+let autoAttainment = 1;
+let autoChance = 85;
 const capElement = id => document.getElementById(id);
-const capReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const capDefaults = {attainment:92, deal:10, discount:10, margin:60, bonus:75, chance:85};
 const capRules = [['cliff','Threshold'], ['accelerator','Accelerator'], ['smooth','Smooth Bézier']];
 const capMoney = value => (value < -0.5 ? '−' : value > 0.5 ? '+' : '') + '₹' + Math.abs(Math.round(value)).toLocaleString('en-IN');
-function animateArrival(node) {
-  node.classList.remove('result-arrival');
-  requestAnimationFrame(() => node.classList.add('result-arrival'));
-}
 function drawCapabilityCurve() {
-  const attainment = Number(capElement('cap-attainment').value) / 100;
+  const attainment = autoAttainment;
   capElement('cap-attainment-value').textContent = (attainment * 100).toFixed(1).replace('.0','') + '%';
   const canvas = capElement('cap-curve');
   const width = canvas.clientWidth;
@@ -54,7 +51,7 @@ function drawCapabilityCurve() {
   });
 }
 function updateSensitivity() {
-  const chance=Number(capElement('cap-chance').value);
+  const chance=autoChance;
   const outcome=ValenceModel.evaluate({...capDefaults,chance},10,'cliff');
   capElement('cap-chance-value').textContent=chance+'%';
   capElement('cap-rep').textContent=capMoney(outcome.rep);
@@ -63,49 +60,34 @@ function updateSensitivity() {
     ? 'At this assumption, bringing the deal forward increases expected rep pay while reducing expected company contribution.'
     : 'At this assumption, compare the signs and amounts above to assess whether interests diverge.';
 }
-function compareRules() {
-  const button=capElement('cap-run');
-  button.disabled=true;
-  capElement('search-rows').replaceChildren();
-  capElement('cap-search-status').textContent='Evaluating 61 discounts and the option to wait for each payout rule…';
-  let index=0;
-  function addResult() {
-    const [rule,name]=capRules[index];
-    const {repBest,companyBest}=ValenceModel.search(capDefaults,rule);
-    const row=document.createElement('tr');
-    [name,repBest.wait?'Wait':repBest.discount+'% discount',capMoney(repBest.company)].forEach(text=>{
-      const cell=document.createElement('td');cell.textContent=text;row.append(cell);
-    });
-    row.className='result-arrival';
-    capElement('search-rows').append(row);
-    capElement('cap-search-status').textContent=name+': expected rep change '+capMoney(repBest.rep)+'. Company-preferred choice: '+(companyBest.wait?'wait.':companyBest.discount+'% discount.');
-    index++;
-    if(index<capRules.length) {setTimeout(addResult,capReducedMotion?0:650);return;}
-    button.disabled=false;
-    capElement('cap-search-status').textContent+=' Comparison complete. A smoother payout can still leave an incentive conflict under these assumptions.';
-  }
-  setTimeout(addResult,capReducedMotion?0:400);
-}
-capElement('cap-attainment').addEventListener('input',drawCapabilityCurve);
-capElement('cap-chance').addEventListener('input',()=>{updateSensitivity();animateArrival(capElement('cap-company'));animateArrival(capElement('cap-rep'));});
-capElement('cap-run').addEventListener('click',compareRules);
-window.addEventListener('resize',drawCapabilityCurve);
-const capObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-  if(entry.isIntersecting){entry.target.classList.add('visible');capObserver.unobserve(entry.target);}
-}),{threshold:.15});
-document.querySelectorAll('.word-reveal').forEach(heading=>{
-  const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT);
-  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-  let index=0;
-  nodes.forEach(node=>{
-    const fragment=document.createDocumentFragment();
-    node.textContent.split(/(\s+)/).forEach(word=>{
-      if(!word.trim()){fragment.append(document.createTextNode(word));return;}
-      const span=document.createElement('span');span.textContent=word;
-      span.style.setProperty('--delay',Math.min(index++*55,350)+'ms');fragment.append(span);
-    });node.replaceWith(fragment);
-  });capObserver.observe(heading);
-});
-drawCapabilityCurve();updateSensitivity();
 
-document.fonts.ready.then(drawCapabilityCurve);
+const curveRoot = capElement('cap-curve').closest('.cap-demo');
+ValenceMotion.loop(curveRoot, 14000, progress => {
+  autoAttainment = .75 + .45 * (0.5 - 0.5 * Math.cos(progress * Math.PI * 2));
+  drawCapabilityCurve();
+});
+const sensitivityRoot = document.querySelector('[data-auto-sensitivity]');
+ValenceMotion.loop(sensitivityRoot, 16000, progress => {
+  autoChance = Math.round(40 + 55 * (0.5 - 0.5 * Math.cos(progress * Math.PI * 2)));
+  updateSensitivity();
+});
+let previousCount = -1;
+const searchRoot = document.querySelector('[data-auto-search]');
+ValenceMotion.loop(searchRoot, 12000, progress => {
+  const count = Math.min(3, Math.floor(progress * 6) + 1);
+  if(count === previousCount) return;
+  previousCount = count;
+  capElement('search-rows').replaceChildren();
+  capRules.slice(0,count).forEach(([rule,name],index) => {
+    const {repBest} = ValenceModel.search(capDefaults,rule);
+    const row = document.createElement('tr');
+    [name,repBest.wait?'Wait':repBest.discount+'% discount',capMoney(repBest.company)].forEach(text => {
+      const cell = document.createElement('td');cell.textContent=text;row.append(cell);
+    });
+    if(index === count-1) row.className='result-arrival';
+    capElement('search-rows').append(row);
+  });
+  capElement('cap-search-status').textContent = count < 3
+    ? 'Searching 61 discount choices for each rule. Results appear as the comparison unfolds.'
+    : 'All three rules still produce an incentive conflict in this scenario. The company prefers a 0% discount in each modeled search.';
+});

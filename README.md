@@ -31,3 +31,11 @@ The HTML also contains a CSP meta tag for supported protections on other static 
 For local testing, serve the website folder with python3 -m http.server 8000 and open http://localhost:8000. This also avoids file-URL restrictions on embedded fonts.
 
 The security checks covered local references, external dependencies, inline scripts/event handlers, browser persistence, and simulation operation under the HTML CSP. They are not a penetration test or a guarantee against every attack. The Terms and Privacy pages are prototype drafts reflecting current application behaviour. Update operator/contact information and processing descriptions when the service changes.
+
+## Automatic demonstrations and About page
+
+Overlay Valence-Autoplay-Changed-Files.zip onto the existing website folder. It includes changed HTML, shared CSS/JavaScript, the new about.html, and interactive.js. Retain model.js, logo.svg, fonts/, and vercel.json from the previous version.
+
+Home and the main Capabilities demonstrations play automatically when visible. Each demonstration has a pause/play control. Playback pauses offscreen and when the tab is hidden. Reduced-motion visitors see static results and may start playback explicitly. The full editable laboratory is at capabilities.html#interactive-lab. The header links only to Home, Capabilities, and About. Legal links remain in the footer.
+
+The About narrative describes Saathvik Pramod’s high-school economics/programming interests, Ceteris, Causal Playground, contract-complexity research, and Kochi Holdings internship. It does not claim customer adoption or independently validated Valence results.
