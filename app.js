@@ -23,7 +23,7 @@ function drawCurve() {
   const maxBonus = Math.max(1000, state.bonus * 1000 * 1.65);
   const x = attainment => 47 + (attainment - 0.75) / 0.45 * (width - 64);
   const y = value => height - 34 - value / maxBonus * (height - 64);
-  context.font = '10px monospace';
+  context.font = '11px Neiko, Arial, sans-serif';
   context.fillStyle = '#a8a1b0';
   context.strokeStyle = '#37313d';
   for (let tick = 0; tick <= 3; tick++) {
@@ -108,6 +108,10 @@ function runSearch() {
       element('early').textContent = 'Wait';
       element('book').textContent = 'Next quarter';
     }
+    document.querySelectorAll('.metric-row strong').forEach(node => {
+      node.classList.remove('result-arrival');
+      requestAnimationFrame(() => node.classList.add('result-arrival'));
+    });
     element('run').disabled = false;
   }
   animation = requestAnimationFrame(advance);
