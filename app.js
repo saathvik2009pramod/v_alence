@@ -125,3 +125,44 @@ const observer = new IntersectionObserver(entries => entries.forEach(entry => {
 }), {threshold: 0.1});
 document.querySelectorAll('.reveal').forEach(node => observer.observe(node));
 update();
+
+function typeHeadline() {
+  const headline = document.querySelector('h1');
+  headline.setAttribute('aria-label', 'Follow the rules. Find the fault.');
+  const walker = document.createTreeWalker(headline, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  const characters = [];
+  textNodes.forEach(node => {
+    const fragment = document.createDocumentFragment();
+    Array.from(node.textContent).forEach(character => {
+      const span = document.createElement('span');
+      span.className = 'typing-character';
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = character;
+      fragment.append(span);
+      characters.push(span);
+    });
+    node.replaceWith(fragment);
+  });
+  if (reducedMotion) {
+    characters.forEach(character => character.classList.add('typed'));
+    characters.at(-1).classList.add('cursor');
+    headline.classList.add('typing-complete');
+    return;
+  }
+  let index = 0;
+  function revealCharacter() {
+    if (index > 0) characters[index - 1].classList.remove('cursor');
+    characters[index].classList.add('typed', 'cursor');
+    index++;
+    if (index === characters.length) {
+      headline.classList.add('typing-complete');
+      return;
+    }
+    const previous = characters[index - 1].textContent;
+    setTimeout(revealCharacter, previous === '.' ? 300 : 75);
+  }
+  setTimeout(revealCharacter, 350);
+}
+typeHeadline();
